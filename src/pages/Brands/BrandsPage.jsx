@@ -112,6 +112,8 @@ function BrandModal({ brand, onClose, onSaved }) {
     description: brand.description || '', is_active: brand.is_active ?? true,
     logo: brand.logo_url ? { id: brand.logo_media_id, url: brand.logo_url } : null,
     logo_media_id: brand.logo_media_id || null,
+    brand_thumbnail: brand.brand_thumbnail_url ? { id: brand.brand_thumbnail_media_id, url: brand.brand_thumbnail_url } : null,
+    brand_thumbnail_media_id: brand.brand_thumbnail_media_id || null,
   });
   const [errors, setErrors] = useState({});
   const [busy, setBusy] = useState(false);
@@ -127,6 +129,9 @@ function BrandModal({ brand, onClose, onSaved }) {
       description: form.description || null, is_active: form.is_active, logo_media_id: form.logo_media_id,
       // keep an imported logo URL until a library image is chosen; clear it when the logo is removed
       ...(form.logo ? {} : { logo_url: null }),
+      brand_thumbnail_media_id: form.brand_thumbnail_media_id,
+      // Keep an existing thumbnail URL until a library image is chosen; clear it when removed.
+      ...(form.brand_thumbnail ? {} : { brand_thumbnail_url: null }),
     };
     try {
       const res = isNew ? await api.post('/admin/brands', body) : await api.put(`/admin/brands/${brand.id}`, body);
@@ -157,6 +162,9 @@ function BrandModal({ brand, onClose, onSaved }) {
         </Field>
         <Field label="Logo" error={errors.logo_media_id} hint="Upload a transparent PNG or a square image.">
           <ImageField value={form.logo} folder="brands" onChange={(m) => { set('logo', m); set('logo_media_id', m?.id || null); }} label="Choose logo" />
+        </Field>
+        <Field label="Brand thumbnail" error={errors.brand_thumbnail_media_id}>
+          <ImageField value={form.brand_thumbnail} folder="brands" onChange={(m) => { set('brand_thumbnail', m); set('brand_thumbnail_media_id', m?.id || null); }} label="Choose thumbnail" />
         </Field>
         <Field label="Caption under the logo" htmlFor="b-label" error={errors.label}>
           <input id="b-label" className="input" value={form.label} onChange={(e) => set('label', e.target.value)} />
