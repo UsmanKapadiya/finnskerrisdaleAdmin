@@ -4,6 +4,18 @@ export function formatDate(iso, withTime = false) {
   return d.toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric', ...(withTime ? { hour: '2-digit', minute: '2-digit' } : {}) });
 }
 
+export function formatCalendarDate(value) {
+  if (!value) return '—';
+  const datePart = typeof value === 'string' ? value.match(/^(\d{4}-\d{2}-\d{2})(?:$|[T ])/)?.[1] : null;
+  const date = datePart ? new Date(`${datePart}T00:00:00Z`) : new Date(value);
+  return date.toLocaleDateString('en-CA', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    ...(datePart ? { timeZone: 'UTC' } : {}),
+  });
+}
+
 export function formatBytes(bytes) {
   if (bytes === null || bytes === undefined) return '—';
   if (bytes < 1024) return `${bytes} B`;

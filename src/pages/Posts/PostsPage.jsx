@@ -7,7 +7,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useConfirm } from '../../components/Modal';
 import DataTable, { Pager, SearchInput } from '../../components/DataTable';
 import { PageHeader, StatusBadge, ErrorBox } from '../../components/UI';
-import { formatDate } from '../../utils/format';
+import { formatCalendarDate } from '../../utils/format';
 
 export default function PostsPage() {
   const list = useList('/admin/posts', { per_page: 20 });
@@ -63,7 +63,7 @@ export default function PostsPage() {
     },
     { key: 'categories', label: 'Categories', render: (r) => (r.categories || []).map((c) => c.name).join(', ') || '—' },
     { key: 'status', label: 'Status', sortable: true, render: (r) => <StatusBadge status={r.status} /> },
-    { key: 'published_at', label: 'Date', sortable: true, render: (r) => formatDate(r.published_at) },
+    { key: 'published_at', label: 'Date', sortable: true, render: (r) => formatCalendarDate(r.published_at) },
     {
       key: 'actions', label: '', className: 'col-actions',
       render: (r) => (trash ? (
