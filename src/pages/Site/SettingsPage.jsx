@@ -3,6 +3,7 @@ import { api } from '../../services/api';
 import { useToast } from '../../hooks/useToast';
 import { PageHeader, Field, Card, Toggle, Spinner, ErrorBox } from '../../components/UI';
 import ImageField from '../../components/ImageField';
+import { setFavicon } from '../../utils/favicon';
 
 /** How each setting is edited. Unknown keys fall back to a text input. */
 const FIELDS = {
@@ -55,6 +56,7 @@ export default function SettingsPage() {
       v[s.key] = s.value;
       if (FIELDS[s.key]?.type === 'json') j[s.key] = JSON.stringify(s.value ?? [], null, 2);
     });
+    setFavicon(v.favicon_url || null);
     setValues(v);
     setJsonText(j);
     setDirty(false);

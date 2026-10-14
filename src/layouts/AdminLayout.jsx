@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { SITE_URL } from '../services/api';
+import { api, SITE_URL } from '../services/api';
+import { useToast } from '../hooks/useToast';
+import { setFavicon } from '../utils/favicon';
 
 const NAV = [
   { group: null, items: [{ to: '/dashboard', label: 'Dashboard', icon: '◧' }] },
@@ -38,9 +40,20 @@ const NAV = [
 
 export default function AdminLayout() {
   const { user, logout, isAdmin } = useAuth();
+  const toast = useToast();
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
   useEffect(() => setOpen(false), [pathname]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    api.get('/admin/settings')
+      .then((res) => {
+        const setting = Object.values(res.data).flat().find((item) => item.key === 'favicon_url');
+        setFavicon(setting?.value || null);
+      })
+      .catch((err) => toast(`Could not load the admin favicon: ${err.message}`, 'error'));
+  }, [isAdmin, toast]);
 
   return (
     <div className={`admin ${open ? 'nav-open' : ''}`}>
