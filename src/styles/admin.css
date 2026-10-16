@@ -279,7 +279,7 @@ a.row-title:hover, .link-btn.row-title:hover { color: var(--purple); }
 .variant-link { margin-right: 8px; text-transform: capitalize; }
 .usages ul { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-direction: column; gap: 4px; }
 
-/* galleries */
+/* galleries  css*/
 .gallery-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
 .gallery-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
 .gallery-card-img { display: grid; place-items: center; aspect-ratio: 4/3; background: #f2f0f4; }
